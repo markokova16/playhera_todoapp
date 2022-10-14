@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Index = () => {
 	const [userInput, setUserInput] = useState("");
@@ -6,6 +7,20 @@ const Index = () => {
 	const [completedTodosIds, setCompletedTodosIds] = useState([]);
 	const [editState, setEditState] = useState(false);
 	const [editId, setEditId] = useState(null);
+
+	const getTodoList = () => {
+		axios
+			.get(
+				"https://crudcrud.com/api/d48d26d42faf4a328436aa3a4508daf4/unicorns"
+			)
+			.then((response) => {
+				setTodoList(response.data);
+			});
+	};
+
+	useEffect(() => {
+		getTodoList();
+	}, []);
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -16,16 +31,29 @@ const Index = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		setTodoList([userInput, ...todoList]);
+		axios
+			.post(
+				"https://crudcrud.com/api/d48d26d42faf4a328436aa3a4508daf4/unicorns",
+				{ name: userInput }
+			)
+			.then(({ data }) => {
+				getTodoList();
+			});
 		setUserInput("");
 	};
 
 	const handleDelete = (todo) => {
-		const updatedArr = todoList.filter(
-			(todoItem) => todoList.indexOf(todoItem) != todoList.indexOf(todo)
-		);
+		axios
+			.delete(
+				"https://crudcrud.com/api/d48d26d42faf4a328436aa3a4508daf4/unicorns/" +
+					todo._id,
+				{ name: userInput }
+			)
+			.then(({ data }) => {
+				getTodoList();
+			});
 
-		setTodoList(updatedArr);
+		setTodoList({});
 	};
 
 	const handleClick = (event, todoIndex) => {
@@ -43,32 +71,36 @@ const Index = () => {
 		}
 	};
 
-	const deleteCompletedTodos = () => {
-		const newTodoList = todoList.filter((_, index) => {
-			return !completedTodosIds.includes(index);
-		});
-		setTodoList([...newTodoList]);
-		setCompletedTodosIds([]);
+	const handleStuff = () => {
+		setEditState(false);
+		setEditId(null);
+		setUserInput("");
 	};
 
 	const handleEdit = (todo, idx) => {
 		setEditState(true);
-		setEditId(idx);
-		setUserInput(todo);
+		setEditId(todo._id);
+		setUserInput(todo.name);
 	};
 
 	const handleCancel = () => {
-		setEditState(false);
-		setEditId(null);
-		setUserInput("");
+		handleStuff();
 	};
 
 	const handleSave = () => {
-		todoList[editId] = userInput;
-		setTodoList([...todoList]);
-		setEditState(false);
-		setEditId(null);
-		setUserInput("");
+		axios
+			.put(
+				"https://crudcrud.com/api/d48d26d42faf4a328436aa3a4508daf4/unicorns/" +
+					editId,
+				{ name: userInput }
+			)
+			.then(({ data }) => {
+				getTodoList();
+			});
+		handleStuff();
+
+		console.log(editId);
+		console.log(todoList);
 	};
 
 	return (
@@ -119,19 +151,22 @@ const Index = () => {
 							return (
 								<li className="text-white">
 									<span
-										onClick={(e) => handleClick(e, todo)}
-										key={todo}
+										onClick={(e) =>
+											handleClick(e, todo._id)
+										}
+										key={todo._id}
 										className={
-											completedTodosIds.includes(todo) &&
-											"line-through"
+											completedTodosIds.includes(
+												todo._id
+											) && "line-through"
 										}
 									>
-										{todo}{" "}
+										{todo.name}{" "}
 									</span>
 
 									<button
 										className="bg-white text-black w-[70px] my-5 ml-2 rounded-lg"
-										onClick={() => handleEdit(todo, idx)}
+										onClick={() => handleEdit(todo)}
 									>
 										Edit
 									</button>
@@ -150,12 +185,6 @@ const Index = () => {
 					  })
 					: "What are your tasks for today? :)"}
 			</ul>
-			<button
-				className="bg-white text-black w-[200px]   rounded-lg"
-				onClick={deleteCompletedTodos}
-			>
-				Delete completed tasks
-			</button>
 		</div>
 	);
 };
