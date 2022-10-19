@@ -1,0 +1,112 @@
+{
+  "uuid": "84917a8d-5381-42d2-a905-e93f02d77482",
+  "lastMigration": 22,
+  "name": "Todo",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3002,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "672806f7-44ac-4049-9d70-143414369507",
+      "documentation": "Base route",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "9b65e978-9ddf-4628-a818-a5ed362ddf02",
+          "body": "Test",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "db406092-d1fc-4e99-9f23-463066bbfe36",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "notes",
+      "responses": [
+        {
+          "uuid": "0560a2f1-a132-4bfd-a57c-941d5c683a8a",
+          "body": "[\n  \"Task 1\",\n  \"Task 2\"\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "af5f30d8-275f-44fd-884f-83fd8fc9f1f0",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "notes",
+      "responses": [
+        {
+          "uuid": "40f2f9a4-2cfe-4a9a-af78-25c9522d99f7",
+          "body": "{\n  \"task\": \"text\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}
